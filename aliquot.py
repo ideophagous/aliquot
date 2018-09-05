@@ -33,7 +33,7 @@ def aliquot(n,end,max_value):
             sequence.append(1)
             stop = True
             flag = 'end'
-        elif counter == end or (max_value is not None and m>max_value):
+        elif counter == end or (max_value is not None and m>max_value) or m<0:
             stop = True
             flag = 'interrupted'
         else:
@@ -151,8 +151,10 @@ if __name__=='__main__':
     #print(type(comp))
     print('Plotting...')
     visual_style["bbox"] = (1500, 1500)
+    #visual_style["layout"] = g.layout_circle
     counter = 1
     for clu in comp:
+        visual_style["layout"] = clu.layout_kamada_kawai()
         print('Plot '+str(counter)+'...')
         gr = plot(clu,**visual_style)
         gr.save(str(counter)+'_n='+str(n)+'_max_sequence_size='+str(end)+'_max_value='+str(max_value)+'.png')
