@@ -2,12 +2,14 @@ from math import sqrt
 from igraph import *
 
 def getDivisors(n):
+    print('...Getting divisors for '+str(n),end='')
     divisors = []
     for i in range(1,int(sqrt(n))+1):
         if n%i == 0:
             divisors.append(i)
             divisors.append(n//i)
     divisors = sorted(list(set(divisors)))
+    print('....done')
     return divisors
 
 def new_sum(lis):
@@ -17,6 +19,7 @@ def new_sum(lis):
     return ss
 
 def aliquot(n,end,max_value):
+    print('...Building Aliquot sequence for '+str(n),end='')
     sequence = [n]
     stop     = False
     counter  = 0
@@ -37,6 +40,7 @@ def aliquot(n,end,max_value):
             sequence.append(m)
             n    = m
         counter+=1
+    print('.....done, seq='+str(sequence)+', flag='+str(flag))
     return sequence,flag
 
 def mapping(n,end,max_value):
@@ -81,7 +85,9 @@ def isContained(g,edge):
     return False
 
 def agraph(n,end,max_value):
+    print('Building Aliquot map...')
     aliqs = mapping(n,end,max_value)
+    print('Aliquot map built.')
 
     g = Graph(n+1)
     for aliq in aliqs:
@@ -134,15 +140,22 @@ if __name__=='__main__':
     '''aliqs = mapping(n,end,max_value)
     for aliq in aliqs:
         print(aliq)'''
+    print('Starting...')
     alg = agraph(n,end,max_value)
+    print('Full graph built.')
     #print(alg)
+    print('Building connected components...')
     visual_style = {}
     comp = getSignificantParts(alg)
+    print('Connected components built.')
     #print(type(comp))
+    print('Plotting...')
     visual_style["bbox"] = (1500, 1500)
     counter = 1
     for clu in comp:
+        print('Plot '+str(counter)+'...')
         gr = plot(clu,**visual_style)
         gr.save(str(counter)+'_n='+str(n)+'_max_sequence_size='+str(end)+'_max_value='+str(max_value)+'.png')
         counter+=1
+    print('Task ended.')
     
